@@ -33,7 +33,7 @@ sudo chmod +x install_ddns_script.sh
 sudo ./install_ddns_script.sh
 ```
 
-脚本将被安装在`/usr/local/ddns_script`路径下，配置文件将会生成在`/etc/ddns_config.yml`。此外将通过Systemd创建定时任务，每10分钟执行一次DDNS。
+脚本将被安装在`/usr/local/ddns_script`路径下，可执行脚本将被安装在`/usr/local/bin/ddns`，配置文件将会生成在`/etc/ddns_config.yml`。此外将通过Systemd创建定时任务，每10分钟执行一次DDNS。
 
 脚本依赖包括以下的Python模块，将会自动安装。[查看全部](https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/blob/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/DDNS_Script/install_files/requirements.txt)
 
@@ -72,12 +72,13 @@ sudo ./install_ddns_script.sh
 
 此脚本仍有待改进，具体计划为：
 
-1. 实现脚本的自动更新
-2. 不使用云厂商的SDK来自行实现
-3. 加密存储配置文件中的accessKeyId和accessSecret等敏感信息
-4. 若设备的网卡配置发生变化则会导致设定的网卡索引发生错位，待修复
-5. 增加云解析的TTL等参数的配置选项
-6. 支持Windows的自动安装脚本
+- [ ] 实现脚本的自动更新
+- [ ] 不使用云厂商的SDK来自行实现
+- [ ] 加密存储配置文件中的accessKeyId和accessSecret等敏感信息
+- [ ] 增加云解析的TTL等参数的配置选项
+- [ ] 支持Windows的自动安装脚本
+- [x] ~~Bug: 若设备的网卡配置发生变化则会导致设定的网卡索引发生错位~~
+- [x] ~~Bug: 使用自定义模式匹配IPv4地址时偶尔会出现匹配不全的情况~~
 
 ------
 

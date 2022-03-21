@@ -7,7 +7,8 @@ Author: zhangxinhui02
 管理本机的DDNS服务运行。
 
 安装本脚本后键入'ddns'命令以运行脚本，键入'ddns help'命令以查看帮助。
-访问 https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/blob/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/ 查看完整项目。
+访问 https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment
+/blob/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/ 查看完整项目。
 """
 
 import os
@@ -18,7 +19,7 @@ from Tea.exceptions import TeaException
 from aliyun_dns_manager import DnsClient
 
 # DDNS脚本配置文件的默认路径，可以进行修改。
-config_path = '/etc/ddns_config.yaml'
+config_path = '/etc/ddns_config.yml'
 # DDNS脚本配置文件的说明信息
 config_description = '# 这是DDNS脚本的配置文件。手动配置此文件可以跳过脚本的初始化。\n' \
                      '# 访问 https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/blob/master/Q2/' \
@@ -32,7 +33,8 @@ data = {'cache_ip': '',  # 缓存上次的IP
         'host_need_ipv6': False,  # 是否支持ipv6
         'host_ip_command': 'ifconfig',  # 用户定义的查询IP的命令
         'host_get_ip_way': 0,  # 获取IP地址的方式，详见get_internet_ip函数
-        'host_index': 0,  # 要使用的网卡或IP的索引
+        'host_card_name': '',   # 要使用的网卡
+        'host_index': 0,  # 要使用的IP的索引
         'user_accessKeyId': '',
         'user_accessSecret': '',
         'user_domain': '',  # 域名
@@ -112,11 +114,11 @@ def init_data() -> None:
                         'ipv4'])
             index = int(input('\n请选择:\n'))
             try:
-                a = net_cards_list[index]
+                net_cards_list[index]
             except IndexError:
                 print('输入错误！\n')
             else:
-                data['host_index'] = index
+                data['host_card_name'] = net_cards_list[index]['name']
                 break
     elif data['host_get_ip_way'] == 3:
         # 用户自定义命令模式，设置命令
@@ -233,7 +235,8 @@ def _get_ip_list_by_command() -> 'dict 包含了IPv4和IPv6地址的字典':
 
 def get_internet_ip(
         way: 'int 获取IP的方法。0:在线API 1:网卡 2:socket 3:从用户定义的命令中提取。IPv6模式仅支持1和3。' = 0,
-        index: 'int 要使用的索引，仅在网卡模式和自定义命令模式下有效' = 0,
+        index: 'int 要使用的索引，仅在自定义命令模式下有效' = 0,
+        card_name: 'str 要使用的网卡名称，仅在网卡模式有效' = '',
         need_ipv6: 'bool 是否使用ipv6地址，仅在网卡和自定义命令模式下有效' = False
 ) -> 'str 获取到的IP地址':
     """获取本机的IP地址"""
@@ -249,11 +252,15 @@ def get_internet_ip(
     elif way == 1:
         # 通过网卡获取
         net_cards_list = _get_net_cards_list()
-        ip_dict = net_cards_list[index]
+        hit_card = None
+        for card in net_cards_list:
+            if card['name'] == card_name:
+                hit_card = card
+                break
         if need_ipv6:
-            ip = ip_dict['ipv6']
+            ip = hit_card['ipv6']
         else:
-            ip = ip_dict['ipv4']
+            ip = hit_card['ipv4']
 
     elif way == 2:
         # 通过socket获取
@@ -310,7 +317,7 @@ def main() -> None:
             break
     # 判断IP是否发生变化
     dns = DnsClient(data['user_accessKeyId'], data['user_accessSecret'])
-    ip = get_internet_ip(data['host_get_ip_way'], data['host_index'], data['host_need_ipv6'])
+    ip = get_internet_ip(data['host_get_ip_way'], data['host_index'], data['host_card_name'], data['host_need_ipv6'])
     last_ip = data['cache_ip']
     if ip == last_ip:
         print('IP未发生变化\n\tIP: ' + ip + '\n\t解析地址: ' + data['user_rr'] + '.' + data['user_domain'] + '\n')
