@@ -33,6 +33,8 @@ sudo chmod +x install_ddns_script.sh
 sudo ./install_ddns_script.sh
 ```
 
+若网络连接存在问题，可以修改`install_ddns_script.sh`中的代理设置。
+
 脚本将被安装在`/usr/local/ddns_script`路径下，可执行脚本将被安装在`/usr/local/bin/ddns`，配置文件将会生成在`/etc/ddns_config.yml`。此外将通过Systemd创建定时任务，每10分钟执行一次DDNS。
 
 脚本依赖包括以下的Python模块，将会自动安装。[查看全部](https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/blob/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/DDNS_Script/install_files/requirements.txt)
