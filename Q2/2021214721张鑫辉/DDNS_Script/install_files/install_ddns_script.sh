@@ -54,5 +54,8 @@ fi
 systemctl enable ddns.timer
 systemctl start ddns.timer
 
-
+echo
+echo DDNS脚本安装完成
+echo
+sleep 5s
 ddns
