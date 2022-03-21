@@ -4,8 +4,7 @@
 # https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/blob/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/
 
 # 配置代理
-# 是否启用代理，只能启用其中一个，配置为true即可
-USE_HTTP_PROXY=false
+# 配置为true即可启用代理
 USE_HTTPS_PROXY=false
 # 代理服务器地址及端口
 ADDRESS=http://127.0.0.1:7890
@@ -21,12 +20,7 @@ then mkdir $INSTALL_PATH
 fi
 
 cd $INSTALL_PATH || exit
-if [ $USE_HTTP_PROXY == "true" ]; then
-  wget -e "http_proxy=$ADDRESS" https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/raw/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/DDNS_Script/install_files/requirements.txt
-  wget -e "http_proxy=$ADDRESS" https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/raw/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/DDNS_Script/ddns.py
-  wget -e "http_proxy=$ADDRESS" https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/raw/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/DDNS_Script/ddns_script.py
-  wget -e "http_proxy=$ADDRESS" https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/raw/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/DDNS_Script/aliyun_dns_manager.py
-elif [ $USE_HTTPS_PROXY == "true" ]; then
+if [ $USE_HTTPS_PROXY == "true" ]; then
   wget -e "https_proxy=$ADDRESS" https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/raw/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/DDNS_Script/install_files/requirements.txt
   wget -e "https_proxy=$ADDRESS" https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/raw/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/DDNS_Script/ddns.py
   wget -e "https_proxy=$ADDRESS" https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/raw/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/DDNS_Script/ddns_script.py
@@ -41,9 +35,7 @@ pip3 install -r requirements.txt || pip install -r requirements.txt
 
 
 cd $BIN_PATH || exit
-if [ $USE_HTTP_PROXY == "true" ]; then
-  wget -e "http_proxy=$ADDRESS" https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/raw/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/DDNS_Script/install_files/ddns
-elif [ $USE_HTTPS_PROXY == "true" ]; then
+if [ $USE_HTTPS_PROXY == "true" ]; then
   wget -e "https_proxy=$ADDRESS" https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/raw/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/DDNS_Script/install_files/ddns
 else
   wget https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/raw/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/DDNS_Script/install_files/ddns
@@ -52,10 +44,7 @@ chmod +x ddns
 
 
 cd $SERVICE_PATH || exit
-if [ $USE_HTTP_PROXY == "true" ]; then
-  wget -e "http_proxy=$ADDRESS" https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/raw/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/DDNS_Script/install_files/ddns.service
-  wget -e "http_proxy=$ADDRESS" https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/raw/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/DDNS_Script/install_files/ddns.timer
-elif [ $USE_HTTPS_PROXY == "true" ]; then
+if [ $USE_HTTPS_PROXY == "true" ]; then
   wget -e "https_proxy=$ADDRESS" https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/raw/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/DDNS_Script/install_files/ddns.service
   wget -e "https_proxy=$ADDRESS" https://github.com/zhangxinhui02/Redrock-SRE-2022-Ops-Winter-Assessment/raw/master/Q2/2021214721%E5%BC%A0%E9%91%AB%E8%BE%89/DDNS_Script/install_files/ddns.timer
 else
